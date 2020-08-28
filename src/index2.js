@@ -14,16 +14,17 @@ async function scrape() {
 
     const page = await browser.newPage();
 
-    await page.goto('https://www.resultadofacil.com.br/resultado-do-jogo-do-bicho/MG/de-ontem');
+    await page.goto('https://www.resultadofacil.com.br/resultado-do-jogo-do-bicho/MG');
 
     const result = await page.evaluate(() => {
         const games = [];
         let game = []
         let validCounter = 0;
-
+        let count = 0;
         document.querySelectorAll('div > table > tbody > tr td')
             .forEach((item) => {
-                games.push(item.innerText);
+                item.
+                
             });
         return games;
     });
