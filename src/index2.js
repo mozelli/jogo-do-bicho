@@ -1,9 +1,37 @@
 const puppeteer = require('puppeteer');
 //const fs = require('fs');
 
-organizeData();
+const premioObject = {
+    sort: null,
+    number: null,
+    group: null,
+    animal: null
+};
 
-async function organizeData() {
+const jogoObject = [];
+
+const jogos = [];
+
+organizeByGames();
+
+function organizeInObjects(games) {
+    for(let i = 0; i < games.length; i++) {
+        const teste = games[i];
+        for(let j = 0; j < teste.length; j++) {
+            teste2 = teste[j];
+            premioObject.sort = teste2[0];
+            premioObject.number = teste2[1];
+            premioObject.group = teste2[2];
+            premioObject.animal = teste2[3];
+            jogoObject.push(premioObject);
+            //console.log(gameObject);
+        }
+        jogos.push(jogoObject);
+    }
+    console.log(jogos);
+}
+
+async function organizeByGames() {
     const premios = await scrape();
 
     let jogo = [];
@@ -23,7 +51,8 @@ async function organizeData() {
         }
     });
     jogos.push(jogo);
-    console.log(jogos);
+    //console.log(jogos);
+    organizeInObjects(jogos);
 }
 
 async function scrape() {
