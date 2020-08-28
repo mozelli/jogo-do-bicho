@@ -23,7 +23,15 @@ async function scrape() {
         let count = 0;
         document.querySelectorAll('div > table > tbody > tr td')
             .forEach((item) => {
-                item.
+                if (count < 4){
+                    game.push(item.innerText);
+                    count = count + 1;
+                } else {
+                    games.push(game);
+                    game = [];
+                    game.push(item.innerText);
+                    count = 1;
+                }
                 
             });
         return games;
