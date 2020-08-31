@@ -43,7 +43,7 @@ async function buscarResultadosDoSite() {
 
 function separaArrayPorRodadas(resultados) {
     
-    rodadas.alvorada = separaPorPremios(resultados.splice(0, 28));
+    //rodadas.alvorada = separaPorPremios(resultados.splice(0, 28));
 
     rodadas.alvorada = resultados.splice(0, 28);
     rodadas.dia = resultados.splice(0, 28);
@@ -67,7 +67,7 @@ function separaPorPremios(rodada) {
     premio.id = rodada[0];
     premio.numero = rodada[1];
     premio.grupo = rodada[2];
-    premio.bicho = rodada[3];preferida
+    premio.bicho = rodada[3];
 
     return premio;
 }
