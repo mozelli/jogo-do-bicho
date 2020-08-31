@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-//const fs = require('fs');
+const fs = require('fs');
 
 const rodadas = {
     alvorada: [],
@@ -11,19 +11,33 @@ const rodadas = {
 run();
 
 async function run() {
+    console.log("INÍCIO:");
+
     const resultados = await buscarResultadosDoSite();
     const rodadas = separaArrayPorRodadas(resultados);
-    console.dir(rodadas);
+    //console.dir(rodadas);
+    const formatadoParaJSON = JSON.stringify(rodadas);
+    armazenaResultados(formatadoParaJSON);
+    console.log("Processo finalizado!");
 }
 
 
 async function buscarResultadosDoSite() {
+    const scrapULR = "https://www.resultadofacil.com.br/resultado-do-jogo-do-bicho/MG/de-hoje";
+
+    console.log("Executando API de webscraping...");
     const browser = await puppeteer.launch();
+    console.log("OK!");
 
+    console.log("Instanciando novo browser...");
     const page = await browser.newPage();
+    console.log("Ok!");
 
-    await page.goto('https://www.resultadofacil.com.br/resultado-do-jogo-do-bicho/MG/de-hoje');
+    console.log("Acessando o site: " + scrapULR);
+    await page.goto(scrapULR);
+    console.log("Ok");
 
+    console.log("Coletando informações do site...");
     const resultados = await page.evaluate(() => {
         let premios = [];
         document.querySelectorAll('div > table > tbody > tr > td')
@@ -36,13 +50,18 @@ async function buscarResultadosDoSite() {
             });
         return premios;
     });
+    console.log("Ok!")
 
     browser.close();
+    console.log("Processo de webscraping finalizado.");
     return resultados;
 } 
 
 function separaArrayPorRodadas(resultados) {
     
+    console.log("Formatando os dados coletados...");
+    console.log("-- Organizando rodadas...");
+
     let aux = {};
     
     aux = resultados.splice(0, 28);
@@ -61,6 +80,8 @@ function separaArrayPorRodadas(resultados) {
 }
 
 function separaPorPremios(rodada) {
+
+    console.log("-- Organizando prêmios")
 
     let premios = {
         primeiro: {
@@ -123,4 +144,16 @@ function separaPorPremios(rodada) {
     premios.quinto.bicho = (aux[2] == undefined ? null : aux[2]);
 
     return premios;
+}
+
+
+function armazenaResultados(resultados) {
+    console.log("Armazenando os dados formatados na base de dados...")
+    fs.writeFile('db.json', resultados, (error) => {
+        if(error) {
+            console.error("Ocorreu um erro: " + error);
+        } else {
+            console.log("Resultados armazenados com sucesso!");
+        }
+    });
 }
