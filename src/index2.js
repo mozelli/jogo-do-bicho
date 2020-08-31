@@ -22,7 +22,7 @@ async function buscarResultadosDoSite() {
 
     const page = await browser.newPage();
 
-    await page.goto('https://www.resultadofacil.com.br/resultado-do-jogo-do-bicho/MG/do-dia/2020-08-27');
+    await page.goto('https://www.resultadofacil.com.br/resultado-do-jogo-do-bicho/MG/de-hoje');
 
     const resultados = await page.evaluate(() => {
         let premios = [];
@@ -68,43 +68,59 @@ function separaPorPremios(rodada) {
             grupo: 0,
             bicho: ''
         },
-        segundo: [],
-        terceiro: [],
-        quarto: [],
-        quinto: []
+        segundo: {
+            numero: 0,
+            grupo: 0,
+            bicho: ''
+        },
+        terceiro: {
+            numero: 0,
+            grupo: 0,
+            bicho: ''
+        },
+        quarto: {
+            numero: 0,
+            grupo: 0,
+            bicho: ''
+        },
+        quinto: {
+            numero: 0,
+            grupo: 0,
+            bicho: ''
+        }
     }
     let aux = [];
 
     aux = rodada.splice(0, 4);
     aux.shift();
 
-    premios.primeiro.numero = aux[0];
-    premios.primeiro.grupo = aux[1];
-    premios.primeiro.bicho = aux[2];
+    premios.primeiro.numero = (aux[0] == undefined ? null : parseInt(aux[0]));
+    premios.primeiro.grupo = (aux[1] == undefined ? null : parseInt(aux[1]));
+    premios.primeiro.bicho = (aux[2] == undefined ? null : aux[2]);
 
     aux = rodada.splice(0, 4);
     aux.shift();
-    premios.segundo.numero = aux[0];
-    premios.segundo.grupo = aux[1];
-    premios.segundo.bicho = aux[2];
+    premios.segundo.numero = (aux[0] == undefined ? null : parseInt(aux[0]));
+    premios.segundo.grupo = (aux[1] == undefined ? null : parseInt(aux[1]));
+    premios.segundo.bicho = (aux[2] == undefined ? null : aux[2]);
 
     aux = rodada.splice(0, 4);
     aux.shift();
-    premios.terceiro.numero = aux[0];
-    premios.terceiro.grupo = aux[1];
-    premios.terceiro.bicho = aux[2];
+    premios.terceiro.numero = (aux[0] == undefined ? null : parseInt(aux[0]));
+    premios.terceiro.grupo = (aux[1] == undefined ? null : parseInt(aux[1]));
+    premios.terceiro.bicho = (aux[2] == undefined ? null : aux[2]);
 
     aux = rodada.splice(0, 4);
     aux.shift();
-    premios.quarto.numero = aux[0];
-    premios.quarto.grupo = aux[1];
-    premios.quarto.bicho = aux[2];
+    premios.quarto.numero = (aux[0] == undefined ? null : parseInt(aux[0]));
+    premios.quarto.grupo = (aux[1] == undefined ? null : parseInt(aux[1]));
+    premios.quarto.bicho = (aux[2] == undefined ? null : aux[2]);
 
     aux = rodada.splice(0, 4);
     aux.shift();
-    premios.quinto.numero = aux[0];
-    premios.quinto.grupo = aux[1];
-    premios.quinto.bicho = aux[2];
+    premios.quinto.numero = (aux[0] == undefined ? null : parseInt(aux[0]));
+    premios.quinto.grupo = (aux[1] == undefined ? null : parseInt(aux[1]));
+    premios.quinto.bicho = (aux[2] == undefined ? null : aux[2]);
 
     return premios;
 }
