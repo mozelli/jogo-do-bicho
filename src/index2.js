@@ -1,99 +1,73 @@
 const puppeteer = require('puppeteer');
 //const fs = require('fs');
 
-const premioObject = {
-    sort: null,
-    number: null,
-    group: null,
-    animal: null
-};
-
-const jogoObject = [];
-
-const jogos = [];
-
-organizeByGames();
-
-function organizeInObjects(games) {
-    for(let i = 0; i < games.length; i++) {
-        const teste = games[i];
-        for(let j = 0; j < teste.length; j++) {
-            teste2 = teste[j];
-            premioObject.sort = teste2[0];
-            premioObject.number = teste2[1];
-            premioObject.group = teste2[2];
-            premioObject.animal = teste2[3];
-            jogoObject.push(premioObject);
-            //console.log(gameObject);
-        }
-        jogos.push(jogoObject);
-    }
-    console.log(jogos);
+const rodadas = {
+    alvorada: [],
+    dia: [],
+    noite: [],
+    preferida: []
 }
 
-async function organizeByGames() {
-    const premios = await scrape();
+run();
 
-    let jogo = [];
-    const jogos = [];
-
-    let counter = 0;
-
-    premios.map(premio => {
-        if(counter < 7) {
-            jogo.push(premio);
-            counter = counter + 1;
-        } else {
-            jogos.push(jogo);
-            jogo = [];
-            jogo.push(premio)
-            counter = 0;
-        }
-    });
-    jogos.push(jogo);
-    //console.log(jogos);
-    organizeInObjects(jogos);
+async function run() {
+    const resultados = await buscarResultadosDoSite();
+    const rodadas = separaArrayPorRodadas(resultados);
+    console.dir(rodadas);
 }
 
-async function scrape() {
+
+async function buscarResultadosDoSite() {
     const browser = await puppeteer.launch();
 
     const page = await browser.newPage();
 
-    await page.goto('https://www.resultadofacil.com.br/resultado-do-jogo-do-bicho/MG');
+    await page.goto('https://www.resultadofacil.com.br/resultado-do-jogo-do-bicho/MG/do-dia/2020-08-27');
 
-    const result = await page.evaluate(() => {
-        const premios = [];
-        let premio = []
-        let validCounter = 0;
-        let count = 0;
-        document.querySelectorAll('div > table > tbody > tr td')
-            .forEach((item) => {
-                if (count < 4){
-                    premio.push(item.innerText);
-                    count = count + 1;
+    const resultados = await page.evaluate(() => {
+        let premios = [];
+        document.querySelectorAll('div > table > tbody > tr > td')
+            .forEach((premio) => {
+                if (premio.innerText !== '') {
+                    premios.push(premio.innerText);
                 } else {
-                    premios.push(premio);
-                    premio = [];
-                    premio.push(item.innerText);
-                    count = 1;
+                    premios.push(null);
                 }
-                
             });
         return premios;
     });
 
     browser.close();
-    
-    return result;
+    return resultados;
 } 
 
-/*
-/*fs.writeFile('jogos.json', result, (error) => {
-        if(error) {
-            console.error("Ocorreu um erro no filesystem: " + error);
-        } else {
-            console.log("Ok!!");
-        }
-    })
-*/
+function separaArrayPorRodadas(resultados) {
+    
+    rodadas.alvorada = separaPorPremios(resultados.splice(0, 28));
+
+    rodadas.alvorada = resultados.splice(0, 28);
+    rodadas.dia = resultados.splice(0, 28);
+    rodadas.noite = resultados.splice(0, 28);
+    rodadas.preferida = resultados.splice(0, 28);
+
+    //const rodadasSeparadasPorPremios = separaPorPremios(rodadas);
+
+    //return rodadasSeparadasPorPremios;
+    return rodadas;
+}
+
+function separaPorPremios(rodada) {
+    let premio = {
+        id: 0,
+        numero: 0,
+        grupo: 0,
+        bicho: '',
+    }
+    
+    premio.id = rodada[0];
+    premio.numero = rodada[1];
+    premio.grupo = rodada[2];
+    premio.bicho = rodada[3];preferida
+
+    return premio;
+}
