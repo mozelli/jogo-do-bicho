@@ -63,7 +63,11 @@ function separaArrayPorRodadas(resultados) {
 function separaPorPremios(rodada) {
 
     let premios = {
-        primeiro: [],
+        primeiro: {
+            numero: 0,
+            grupo: 0,
+            bicho: ''
+        },
         segundo: [],
         terceiro: [],
         quarto: [],
@@ -73,24 +77,34 @@ function separaPorPremios(rodada) {
 
     aux = rodada.splice(0, 4);
     aux.shift();
-    premios.primeiro = aux;
+
+    premios.primeiro.numero = aux[0];
+    premios.primeiro.grupo = aux[1];
+    premios.primeiro.bicho = aux[2];
 
     aux = rodada.splice(0, 4);
     aux.shift();
-    premios.segundo = aux;
+    premios.segundo.numero = aux[0];
+    premios.segundo.grupo = aux[1];
+    premios.segundo.bicho = aux[2];
 
     aux = rodada.splice(0, 4);
     aux.shift();
-    premios.terceiro = aux;
+    premios.terceiro.numero = aux[0];
+    premios.terceiro.grupo = aux[1];
+    premios.terceiro.bicho = aux[2];
 
     aux = rodada.splice(0, 4);
     aux.shift();
-    premios.quarto = aux;
+    premios.quarto.numero = aux[0];
+    premios.quarto.grupo = aux[1];
+    premios.quarto.bicho = aux[2];
 
     aux = rodada.splice(0, 4);
     aux.shift();
-    premios.quinto = aux;
+    premios.quinto.numero = aux[0];
+    premios.quinto.grupo = aux[1];
+    premios.quinto.bicho = aux[2];
 
     return premios;
 }
-
