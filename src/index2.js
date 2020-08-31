@@ -43,13 +43,21 @@ async function buscarResultadosDoSite() {
 
 function separaArrayPorRodadas(resultados) {
     
-    //let aux = resultados.splice(0, 28);
+    let aux = {};
     //rodadas.alvorada = separaPorPremios(aux);
 
-    rodadas.alvorada = resultados.splice(0, 28);
-    rodadas.dia = resultados.splice(0, 28);
-    rodadas.noite = resultados.splice(0, 28);
-    rodadas.preferida = resultados.splice(0, 28);
+    
+    aux = resultados.splice(0, 28);
+    rodadas.alvorada = separaPorPremios(aux);
+
+    aux = resultados.splice(0, 28);
+    rodadas.dia = separaPorPremios(aux);
+
+    aux = resultados.splice(0, 28);
+    rodadas.noite = separaPorPremios(aux);
+
+    aux = resultados.splice(0, 28);
+    rodadas.preferida = separaPorPremios(aux);
 
     //const rodadasSeparadasPorPremios = separaPorPremios(rodadas);
 
@@ -58,20 +66,13 @@ function separaArrayPorRodadas(resultados) {
 }
 
 function separaPorPremios(rodada) {
-    let itens = {
-        id: 0,
-        numero: 0,
-        grupo: 0,
-        bicho: '',
+    let premios = {
+        primeiro: rodada.splice(0, 4),
+        segundo: rodada.splice(0, 4),
+        terceiro: rodada.splice(0, 4),
+        quarto: rodada.splice(0, 4),
+        quinto: rodada.splice(0, 4)
     }
 
-    let jogo = [];
-    
-
-    itens.id = rodada[0];
-    itens.numero = rodada[1];
-    itens.grupo = rodada[2];
-    itens.bicho = rodada[3];
-
-    return itens;
+    return premios;
 }
